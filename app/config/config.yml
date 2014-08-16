@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: services.yml }
 
 framework:
     #esi:             ~
@@ -64,14 +65,47 @@ doctrine:
         # e.g. database_path: "%kernel.root_dir%/data/data.db3"
         # path:     "%database_path%"
     orm:
+        dql:
+            string_functions:
+                group_concat: Cwd\GenericBundle\Doctrine\Extensions\GroupConcat
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
         mappings:
-          AcmeDemoBundle:
+          model:
             type: "annotation"
-            prefix: Acme\DemoBundle\Entity
+            dir:  %kernel.root_dir%/../src/DieMarke/Model/Entity
+            prefix: DieMarke\Model\Entity
             alias:  Model
-            is_bundle: true
+            is_bundle: false
+          #Doctrine Extensions Mappings
+          #gedmo_translatable:
+          #    type: annotation
+          #    prefix: Gedmo\Translatable\Entity
+          #    dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
+          #    alias: GedmoTranslatable # this one is optional and will default to the name set for the mapping
+          #    is_bundle: false
+          #gedmo_translator:
+          #    type: annotation
+          #    prefix: Gedmo\Translator\Entity
+          #    dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translator/Entity"
+          #    alias: GedmoTranslator # this one is optional and will default to the name set for the mapping
+          #    is_bundle: false
+          gedmo_loggable:
+              type: annotation
+              prefix: Gedmo\Loggable\Entity
+              dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
+              alias: GedmoLoggable # this one is optional and will default to the name set for the mapping
+              is_bundle: false
+          #gedmo_tree:
+          #    type: annotation
+          #    prefix: Gedmo\Tree\Entity
+          #    dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
+          #    alias: GedmoTree # this one is optional and will default to the name set for the mapping
+          #    is_bundle: false
+        filters:
+            softdeleteable:
+                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+                enabled: true
 
 
 # Swiftmailer Configuration
