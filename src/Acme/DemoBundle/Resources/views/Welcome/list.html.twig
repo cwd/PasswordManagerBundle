@@ -1,0 +1,29 @@
+{% extends 'AcmeDemoBundle::layout.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <section class="panel panel-featured panel-featured-primary">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a class="" style="opacity:1; font-weight:bold; margin-right:15px" href="{{ path('acme_demo_welcome_create') }}"><i class="fa fa-plus-square"></i> {{ "Create new"|trans }}</a>
+                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-times"></a>
+                    </div>
+
+                    <h2 class="panel-title">{{ "User"|trans }}</h2>
+                </header>
+                <div class="panel-body">
+                    {{ datatable({
+                    'main_template':    'CwdAdminPortoBundle:Grid:grid.html.twig',
+                    'js' : {
+                    'sAjaxSource' : path('acme_demo_welcome_grid'),
+                    }
+                    })
+                    }}
+                </div>
+
+            </section>
+        </div>
+    </div>
+{% endblock %}
