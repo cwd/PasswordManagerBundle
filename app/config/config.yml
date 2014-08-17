@@ -34,7 +34,7 @@ twig:
     strict_variables: "%kernel.debug%"
     form:
         resources:
-          - AcmeDemoBundle:Generic:bootstrap.html.twig
+          - AdmMgrAdminBundle:Generic:bootstrap.html.twig
 
 
 # Assetic Configuration
@@ -43,6 +43,7 @@ assetic:
     use_controller: false
     bundles:
       - CwdAdminPortoBundle
+      - AdmMgrAdminBundle
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -118,7 +119,7 @@ swiftmailer:
 
 knp_menu:
     twig:
-        template: AcmeDemoBundle:Menu:main.html.twig
+        template: AdmMgrAdminBundle:Menu:main.html.twig
     templating: false
     default_renderer: twig
 
@@ -129,7 +130,9 @@ jms_di_extra:
             - "CwdTranslationAdminBundle"
             - "CwdAdminAvantBundle"
             - "CwdSSLCryptBundle"
-            - "AcmeDemoBundle"
+            - "AdmMgrAdminBundle"
+        directories:
+            - "%kernel.root_dir%/../src/AdmMgr/Service"
 
 braincrafted_bootstrap:
     auto_configure:

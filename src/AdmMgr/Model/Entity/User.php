@@ -60,9 +60,10 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=false)
+     * @Assert\NotBlank(groups={"default"})
      */
-    private $fingerprint;
+    private $password;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -86,6 +87,7 @@ class User implements UserInterface
 
     /**
      * @ORM\ManyToMany(targetEntity="AdmMgr\Model\Entity\Role", mappedBy="users")
+     * @Assert\NotBlank(groups={"default"})
      */
     private $roles;
 
@@ -173,19 +175,19 @@ class User implements UserInterface
     /**
      * @return string
      */
-    public function getFingerprint()
+    public function getPassword()
     {
-        return $this->fingerprint;
+        return $this->password;
     }
 
     /**
-     * @param string $fingerprint
+     * @param string $password
      *
      * @return $this
      */
-    public function setFingerprint($fingerprint)
+    public function setPassword($password)
     {
-        $this->fingerprint = $fingerprint;
+        $this->password = $password;
 
         return $this;
     }
@@ -272,9 +274,24 @@ class User implements UserInterface
     /**
      * @return Collection
      */
-    public function getRoles()
+    public function getRolesCollection()
     {
         return $this->roles;
+    }
+
+    /**
+     * Roles Array
+     * @return array
+     */
+    public function getRoles()
+    {
+        $r = array();
+        $roles = $this->getRolesCollection();
+        foreach ($roles as $role) {
+            $r[] = $role->getRole();
+        }
+
+        return $r;
     }
 
     /**
@@ -282,9 +299,10 @@ class User implements UserInterface
      *
      * @return $this
      */
-    public function setRoles($roles)
+    public function setRolesCollection($roles)
     {
         $this->roles = $roles;
+
         return $this;
     }
 
@@ -293,9 +311,10 @@ class User implements UserInterface
      *
      * @return $this
      */
-    public function addRole(Role $role)
+    public function addRolesCollection(Role $role)
     {
         $this->roles[] = $role;
+        $role->addUser($this);
 
         return $this;
     }
@@ -305,7 +324,7 @@ class User implements UserInterface
      *
      * @return $this
      */
-    public function removeRole(Role $role)
+    public function removeRolesCollection(Role $role)
     {
         $this->getRoles()->removeElement($role);
 
@@ -396,21 +415,6 @@ class User implements UserInterface
         return $this;
     }
 
-
-
-    /**
-     * Returns the password used to authenticate the user.
-     *
-     * This should be the encoded password. On authentication, a plain-text
-     * password will be salted, encoded, and then compared to this value.
-     *
-     * @return string The password
-     */
-    public function getPassword()
-    {
-        // @Todo Implement getPassword() method.
-    }
-
     /**
      * Returns the salt that was originally used to encode the password.
      *
@@ -441,6 +445,5 @@ class User implements UserInterface
      */
     public function eraseCredentials()
     {
-
     }
 }
