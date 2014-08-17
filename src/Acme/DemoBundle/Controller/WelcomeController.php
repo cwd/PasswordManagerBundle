@@ -2,7 +2,10 @@
 
 namespace Acme\DemoBundle\Controller;
 
-use Acme\DemoBundle\Entity\User;
+use AdmMgr\Model\Entity\Key;
+use AdmMgr\Model\Entity\Store;
+use AdmMgr\Model\Entity\User;
+use Cwd\Bundle\SSLCryptBundle\Services\SSL;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -26,15 +29,53 @@ class WelcomeController extends Controller
         #$this->get('session')->getFlashBag()->add('info', 'Your changes were saved!');
 
         /**
-        $row = new User();
-        $row->setFirstname('Max')
-            ->setLastname('Mustermann')
-            ->setEmail('max@mustermann.at')
-            ->setCreated(new \DateTime());
+         * @var SSL $ssl
+         */
+        $ssl = $this->get('cwd.bundle.sslcrypt.ssl');
+        /**
+        $ssl->generateKey('1234');
 
-        $this->getDoctrine()->getManager()->persist($row);
+        $key = new Key();
+        $key->setPublic($ssl->getPublicKey())
+            ->setPrivate($ssl->getPrivateKey());
+
+        $user = new User();
+        $user->setEmail('max@mustermann.at')
+             ->setLastname('Mustermann')
+             ->setFirstname('Max')
+             ->setKey($key);
+
+        $key->setUser($user);
+
+        $this->getDoctrine()->getManager()->persist($key);
+        $this->getDoctrine()->getManager()->persist($user);
         $this->getDoctrine()->getManager()->flush();
         **/
+
+        /**
+         * @var User $user
+         */
+        $user1 = $this->getDoctrine()->getManager()->getRepository('Model:User')->find(1);
+        $key1 = $user1->getKey()->getPublic();
+
+        $user2 = $this->getDoctrine()->getManager()->getRepository('Model:User')->find(2);
+        $key2 = $user2->getKey()->getPublic();
+
+        $publicKey = $user1->getKey()->getPublic();
+        $privateKey = $user1->getKey()->getPrivate();
+
+        $publicKey2 = $user2->getKey()->getPublic();
+        $privateKey2 = $user2->getKey()->getPrivate();
+
+        echo '<pre>';
+        $store = $this->getDoctrine()->getManager()->getRepository('Model:Store')->find(3);
+        $data = $store->getData();
+        $envKey = json_decode($store->getEnvKey());
+        $data = $ssl->decrypt($data, $envKey, $privateKey, '1234');
+        print "Decypted data:\t\t$data\n";
+        echo '</pre>';
+
+        exit;
 
         return $this->render('AcmeDemoBundle:Welcome:index.html.twig');
     }

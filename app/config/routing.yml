@@ -1,0 +1,5 @@
+adm_mgr_admin:
+    resource: "@AdmMgrAdminBundle/Controller/"
+    type:     annotation
+    prefix:   /
+

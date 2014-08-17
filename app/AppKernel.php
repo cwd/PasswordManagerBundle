@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new Rollerworks\Bundle\PasswordStrengthBundle\RollerworksPasswordStrengthBundle(),
             new Cwd\GenericBundle\CwdGenericBundle(),
             new Cwd\Admin\PortoBundle\CwdAdminPortoBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
@@ -27,6 +28,9 @@ class AppKernel extends Kernel
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
             new Genemu\Bundle\FormBundle\GenemuFormBundle(),
             new Ali\DatatableBundle\AliDatatableBundle(),
+            new VMelnik\DoctrineEncryptBundle\VMelnikDoctrineEncryptBundle(),
+            new AdmMgr\Bundle\AdminBundle\AdmMgrAdminBundle(),
+            new Cwd\Bundle\SSLCryptBundle\CwdSSLCryptBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

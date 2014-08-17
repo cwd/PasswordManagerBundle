@@ -38,7 +38,9 @@
         "ali/datatable": "dev-master",
         "cwd/generic-bundle": "dev-master",
         "cwd/adminporto-bundle" : "dev-master",
-        "spomky-labs/role-hierarchy-bundle": "dev-master"
+        "spomky-labs/role-hierarchy-bundle": "dev-master",
+        "rollerworks/password-strength-bundle": "master-dev",
+        "vmelnik/doctrine-encrypt-bundle": "dev-master"
 
     },
     "require-dev": {
