@@ -23,6 +23,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @ORM\Entity(repositoryClass="PwdMgr\Model\Repository\UserRepository")
  * @Gedmo\Loggable
+ * @UniqueEntity("email")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=true)
  */
 class User implements UserInterface
@@ -60,7 +61,7 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=false, unique=true)
      * @Assert\NotBlank(groups={"password"})
      * @RollerworksPassword\PasswordStrength(minLength=8, minStrength=4)
      */

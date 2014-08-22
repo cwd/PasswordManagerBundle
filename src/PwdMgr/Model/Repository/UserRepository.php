@@ -10,9 +10,7 @@
 namespace PwdMgr\Model\Repository;
 
 use Cwd\GenericBundle\Doctrine\EntityRepository;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\Criteria;
-use PwdMgr\Model\Entity\Role;
+use Doctrine\ORM\NoResultException;
 use PwdMgr\Model\Entity\User;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -41,13 +39,12 @@ class UserRepository extends EntityRepository implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        die('CALLEd');
         $q = $this
             ->createQueryBuilder('u')
             ->select('u, r')
             ->leftJoin('u.roles', 'r')
-            ->where('u.samAccountName = :sam_account_name')
-            ->setParameter('sam_account_name', $username)
+            ->where('u.email = :email')
+            ->setParameter('email', $username)
             ->getQuery();
 
         try {

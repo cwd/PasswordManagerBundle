@@ -5,10 +5,3 @@ services:
     entity_manager: @doctrine.orm.entity_manager
     dispatcher: @event_dispatcher
     security: @security.context
-
-    gedmo.listener.softdeleteable:
-        class: Gedmo\SoftDeleteable\SoftDeleteableListener
-        tags:
-            - { name: doctrine.event_subscriber, connection: default }
-        calls:
-            - [ setAnnotationReader, [ @annotation_reader ] ]

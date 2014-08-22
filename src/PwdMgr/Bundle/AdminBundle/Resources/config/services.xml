@@ -4,17 +4,19 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
+<!--
     <parameters>
         <parameter key="adm_mgr_admin.example.class">PwdMgr\Bundle\AdminBundle\Example</parameter>
     </parameters>
 
+
     <services>
-        <service id="adm_mgr_admin.example" class="%adm_mgr_admin.example.class%">
+        <service id="gedmo.listener.softdeleteable" class="Gedmo\SoftDeleteable\SoftDeleteableListener">
+
             <argument type="service" id="service_id" />
             <argument>plain_value</argument>
             <argument>%parameter_name%</argument>
         </service>
     </services>
-    -->
+-->
 </container>

@@ -122,18 +122,17 @@ abstract class BaseService extends CwdService
     {
         try {
             $this->entityManager->persist($object);
-            /**
-             * @fixme not sure if this is good to be called here
-             * see http://de.slideshare.net/kriswallsmith/how-kris-writes-symfony-apps
-             * slide 44
-             **/
-            $this->entityManager->flush();
         } catch (\Exception $e) {
             $this->getLogger()->warn('Object could not be saved', (array) $e);
             throw new PersistanceException('Object could not be stored - '.$e->getMessage(), null, $e);
         }
 
         return true;
+    }
+
+    public function flush()
+    {
+        $this->getEm()->flush();
     }
 
     /**

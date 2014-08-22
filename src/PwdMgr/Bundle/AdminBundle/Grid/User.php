@@ -62,7 +62,7 @@ class User extends Grid
                     5 => [
                         'view' => 'CwdAdminPortoBundle:Grid:_actions.html.twig',
                         'params' => [
-                            'edit_route'     => 'admmgr_admin_user_edit',
+                            'edit_route'     => 'pwdmgr_admin_user_edit',
                             //'delete_route'   => 'acme_demo_welcome_delete',
                             //'undelete_route' => 'itasset_admin_user_undelete',
                         ],

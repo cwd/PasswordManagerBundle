@@ -31,6 +31,7 @@ class AuthController extends Controller
      * @param Request $request
      *
      * @Route("/login", name="auth_login")
+     * @Method({"GET", "POST"})
      * @Template()
      *
      * @return array
@@ -54,6 +55,7 @@ class AuthController extends Controller
      *
      * @Route("/passwd/{passwd}")
      * @Template()
+     * @Method({"GET"})
      * @return array
      */
     public function passwdAction($passwd)
@@ -65,6 +67,7 @@ class AuthController extends Controller
 
     /**
      * @Route("/login_check", name="auth_security_check")
+     * @Method({"GET", "POST"})
      */
     public function securityCheckAction()
     {
@@ -73,6 +76,7 @@ class AuthController extends Controller
 
     /**
      * @Route("/logout", name="auth_logout")
+     * @Method({"GET"})
      */
     public function logoutAction()
     {

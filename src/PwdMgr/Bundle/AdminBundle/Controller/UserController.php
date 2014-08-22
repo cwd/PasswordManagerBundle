@@ -9,14 +9,11 @@
  */
 namespace PwdMgr\Bundle\AdminBundle\Controller;
 
-use AdmMgr\Model\Entity\Key;
-use AdmMgr\Model\Entity\User;
-use Monolog\Logger;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
+use PwdMgr\Model\Entity\Key;
+use PwdMgr\Model\Entity\User;
+use PwdMgr\Service\Exception\UserNotFoundException;
 use JMS\DiExtraBundle\Annotation as DI;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Symfony\Component\Security\Core\SecurityContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
@@ -37,13 +34,14 @@ class UserController extends Controller
      *
      * @Route("/create")
      * @Secure(roles="ROLE_ADMIN")
+     * @Method({"GET", "POST"})
      * @return array
      */
     public function createAction(Request $request)
     {
         $object = $this->getService()->getNew();
 
-        return $this->_formHandler($object, $request, true);
+        return $this->formHandler($object, $request, true);
     }
 
     /**
@@ -51,6 +49,7 @@ class UserController extends Controller
      *
      * @Route("/edit/{id}")
      * @Secure(roles="ROLE_ADMIN")
+     * @Method({"GET", "POST"})
      * @return array
      */
     public function editAction(Request $request)
@@ -58,7 +57,7 @@ class UserController extends Controller
         try {
             $asset = $this->getService()->find($request->get('id'));
 
-            return $this->_formHandler($asset, $request);
+            return $this->formHandler($asset, $request);
         } catch (UserNotFoundException $e) {
             $this->flashError(sprintf('Row with ID %s not found', $request->get('id')));
 
@@ -75,7 +74,7 @@ class UserController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    protected function _formHandler(User $object, Request $request, $persist = false)
+    protected function formHandler(User $object, Request $request, $persist = false)
     {
 
         $form = $this->createForm('form_user', $object);
@@ -123,7 +122,7 @@ class UserController extends Controller
      *
      * @Route("/delete/{id}")
      * @Secure(roles="ROLE_ADMIN")
-     *
+     * @Method({"GET"})
      * @return Response
      */
     public function deleteAction(Request $request)
@@ -144,6 +143,7 @@ class UserController extends Controller
      * @Route("/list")
      * @Template()
      * @Secure(roles="ROLE_ADMIN")
+     * @Method({"GET"})
      *
      * @return array
      */
@@ -159,6 +159,7 @@ class UserController extends Controller
      *
      * @Route("/grid")
      * @return Response
+     * @Method({"GET"})
      */
     public function gridAction()
     {
@@ -168,6 +169,7 @@ class UserController extends Controller
     /**
      * @Route("/")
      * @Template()
+     * @Method({"GET"})
      *
      * @return array
      */
@@ -177,7 +179,7 @@ class UserController extends Controller
     }
 
     /**
-     * @return \AdmMgr\Service\asset
+     * @return \PwdMgr\Service\User
      */
     protected function getService()
     {
@@ -191,6 +193,7 @@ class UserController extends Controller
      * @Route("/{id}")
      * @Template()
      * @Secure(roles="ROLE_ADMIN")
+     * @Method({"GET"})
      * @return array
      * @todo
      */

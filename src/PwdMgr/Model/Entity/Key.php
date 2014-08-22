@@ -9,10 +9,8 @@
  */
 namespace PwdMgr\Model\Entity;
 
-use Doctrine\Common\Collections\Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use VMelnik\DoctrineEncryptBundle\Configuration\Encrypted;
 

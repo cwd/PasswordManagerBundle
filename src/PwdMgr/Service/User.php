@@ -13,7 +13,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use JMS\DiExtraBundle\Annotation as DI;
 use Monolog\Logger;
-use Symfony\Component\HttpFoundation\Session\Session;
 use PwdMgr\Service\Exception\UserNotFoundException as NotFoundException;
 use PwdMgr\Model\Entity\User as Entity;
 

@@ -31,7 +31,7 @@ class Controller extends SymfonyController
     /**
      * @return SecurityContext
      */
-    public function getContext()
+    protected function getContext()
     {
         return $this->container->get('security.context');
     }
@@ -39,7 +39,7 @@ class Controller extends SymfonyController
     /**
      * @return Logger
      */
-    public function getLogger()
+    protected function getLogger()
     {
         if ($this->logger === null) {
             $this->logger = $this->get('logger');

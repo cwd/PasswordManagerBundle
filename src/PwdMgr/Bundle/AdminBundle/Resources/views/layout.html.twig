@@ -53,11 +53,4 @@
 
     {% block content %}{% endblock %}
 
-
-    {% if code is defined %}
-        <h2>Code behind this page</h2>
-        <div class="block">
-            <div class="symfony-content">{{ code|raw }}</div>
-        </div>
-    {% endif %}
 {% endblock %}
