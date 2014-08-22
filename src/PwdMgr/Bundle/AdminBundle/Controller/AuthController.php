@@ -68,7 +68,7 @@ class AuthController extends Controller
 
     /**
      * @Route("/login_check", name="auth_security_check")
-     * @Method({"GET", "POST"})
+     * @Method({"GET"})
      */
     public function securityCheckAction()
     {
