@@ -29,7 +29,7 @@ class AppKernel extends Kernel
             new Genemu\Bundle\FormBundle\GenemuFormBundle(),
             new Ali\DatatableBundle\AliDatatableBundle(),
             new VMelnik\DoctrineEncryptBundle\VMelnikDoctrineEncryptBundle(),
-            new AdmMgr\Bundle\AdminBundle\AdmMgrAdminBundle(),
+            new PwdMgr\Bundle\AdminBundle\PwdMgrAdminBundle(),
             new Cwd\Bundle\SSLCryptBundle\CwdSSLCryptBundle(),
         );
 

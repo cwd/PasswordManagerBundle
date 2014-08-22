@@ -1,0 +1,63 @@
+{% extends 'CwdAdminPortoBundle:Layout:default.html.twig' %}
+{% block title %}Demo App{% endblock %}
+
+{% block header %}
+    {% embed 'CwdAdminPortoBundle:Section:header.html.twig' %}
+        {% block logo %}
+            <img src="{{ asset('bundles/pwdmgradmin/images/cwd.png') }}" height="35" alt="CWD" />
+        {% endblock %}
+
+        {% block currentuser %}
+            <a href="#" data-toggle="dropdown">
+                <figure class="profile-picture">
+                    <img src="{{ asset('bundles/cwdadminporto/assets/images/!logged-user.jpg') }}" alt="Joseph Doe" class="img-circle" data-lock-picture="{{ asset('bundles/cwdadminporto/assets/images/!logged-user.jpg') }}" />
+                </figure>
+                <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
+                    <span class="name">Ludwig Ruderstaller</span>
+                    <span class="role">administrator</span>
+                </div>
+
+                <i class="fa custom-caret"></i>
+            </a>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block sidebarLeft %}
+    {% block mainnavigation %}
+        {{ knp_menu_render('PwdMgrAdminBundle:Main:mainMenu') }}
+    {% endblock %}
+{% endblock %}
+
+
+{% block body %}
+    {% block bodyheader %}
+        <header class="page-header">
+            <h2>test Blank Page</h2>
+
+            <div class="right-wrapper pull-right">
+                <ol class="breadcrumbs">
+                    <li>
+                        <a href="index.html">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li><a href="/">Pages</a></li>
+                    <li><span>test Blank Page</span></li>
+                </ol>
+
+                <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+            </div>
+        </header>
+    {% endblock %}
+
+    {% block content %}{% endblock %}
+
+
+    {% if code is defined %}
+        <h2>Code behind this page</h2>
+        <div class="block">
+            <div class="symfony-content">{{ code|raw }}</div>
+        </div>
+    {% endif %}
+{% endblock %}

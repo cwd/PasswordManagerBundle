@@ -1,6 +1,6 @@
 security:
     encoders:
-        AdmMgr\Model\Entity\User:
+        PwdMgr\Model\Entity\User:
           algorithm: bcrypt
           cost: 13
 
@@ -10,7 +10,7 @@ security:
 
     providers:
         user_db:
-            entity: { class: AdmMgr\Model\Entity\User, property: email }
+            entity: { class: PwdMgr\Model\Entity\User, property: email }
 
     firewalls:
         dev:

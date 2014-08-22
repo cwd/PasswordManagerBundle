@@ -34,7 +34,7 @@ twig:
     strict_variables: "%kernel.debug%"
     form:
         resources:
-          - AdmMgrAdminBundle:Generic:bootstrap.html.twig
+          - PwdMgrAdminBundle:Generic:bootstrap.html.twig
 
 
 # Assetic Configuration
@@ -43,7 +43,7 @@ assetic:
     use_controller: false
     bundles:
       - CwdAdminPortoBundle
-      - AdmMgrAdminBundle
+      - PwdMgrAdminBundle
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -74,8 +74,8 @@ doctrine:
         mappings:
           model:
             type: "annotation"
-            dir:  %kernel.root_dir%/../src/AdmMgr/Model/Entity
-            prefix: AdmMgr\Model\Entity
+            dir:  %kernel.root_dir%/../src/PwdMgr/Model/Entity
+            prefix: PwdMgr\Model\Entity
             alias:  Model
             is_bundle: false
           #Doctrine Extensions Mappings
@@ -119,7 +119,7 @@ swiftmailer:
 
 knp_menu:
     twig:
-        template: AdmMgrAdminBundle:Menu:main.html.twig
+        template: PwdMgrAdminBundle:Menu:main.html.twig
     templating: false
     default_renderer: twig
 
@@ -130,9 +130,9 @@ jms_di_extra:
             - "CwdTranslationAdminBundle"
             - "CwdAdminAvantBundle"
             - "CwdSSLCryptBundle"
-            - "AdmMgrAdminBundle"
+            - "PwdMgrAdminBundle"
         directories:
-            - "%kernel.root_dir%/../src/AdmMgr/Service"
+            - "%kernel.root_dir%/../src/PwdMgr/Service"
 
 braincrafted_bootstrap:
     auto_configure:

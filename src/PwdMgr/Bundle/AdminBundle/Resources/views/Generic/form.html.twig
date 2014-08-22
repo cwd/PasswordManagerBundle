@@ -1,0 +1,24 @@
+{% extends 'PwdMgrAdminBundle::layout.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <section class="panel panel-featured panel-featured-primary">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-times"></a>
+                    </div>
+
+                    <h2 class="panel-title">{{ title }}</h2>
+                </header>
+                <div class="panel-body">
+                    {{ form(form, {'style': 'horizontal', 'col_size': 'xs', 'align_with_widget': true, 'attr': {'novalidate': 'novalidate'}}) }}
+                </div>
+
+            </section>
+        </div>
+    </div>
+
+
+{% endblock %}

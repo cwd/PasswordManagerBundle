@@ -1,5 +1,5 @@
 adm_mgr_admin:
-    resource: "@AdmMgrAdminBundle/Controller/"
+    resource: "@PwdMgrAdminBundle/Controller/"
     type:     annotation
     prefix:   /
 
