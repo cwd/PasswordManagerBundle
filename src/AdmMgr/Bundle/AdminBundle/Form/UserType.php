@@ -13,6 +13,7 @@ namespace AdmMgr\Bundle\AdminBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use JMS\DiExtraBundle\Annotation as DI;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -62,7 +63,14 @@ class UserType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'validation_groups' => array('default'),
+            'validation_groups' => function(FormInterface $form) {
+                $data = $form->getData();
+                if ($data->getId() > 0) {
+                    return array('default');
+                }
+
+                return array('default', 'password');
+            },
             'data_class' => 'AdmMgr\Model\Entity\User',
         ));
     }

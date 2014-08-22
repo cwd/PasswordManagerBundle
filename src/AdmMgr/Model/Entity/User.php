@@ -61,7 +61,8 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
-     * @Assert\NotBlank(groups={"default"})
+     * @Assert\NotBlank(groups={"password"})
+     * @RollerworksPassword\PasswordStrength(minLength=8, minStrength=4)
      */
     private $password;
 
@@ -187,7 +188,7 @@ class User implements UserInterface
      */
     public function setPassword($password)
     {
-        $this->password = $password;
+        $this->password = password_hash($password, PASSWORD_BCRYPT, array("cost" => 13));
 
         return $this;
     }

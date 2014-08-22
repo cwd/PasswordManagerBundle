@@ -83,8 +83,11 @@ class UserController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
+                if ($request->getPassword() && trim($request->getPassword()) != '') {
+                    $object->setPassword($request->getPassword());
+                }
+
                 if ($persist) {
-                    $object->setPassword(password_hash($request->getPassword(), PASSWORD_BCRYPT, array("cost" => 13)));
                     $this->getService()->persist($object);
                     /**
                      * @TODO This should go in a service class

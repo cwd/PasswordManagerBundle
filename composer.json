@@ -28,8 +28,8 @@
         "sensio/distribution-bundle": "~3.0",
         "sensio/framework-extra-bundle": "~3.0",
         "incenteev/composer-parameter-handler": "~2.0",
-        "knplabs/knp-menu":"dev-master",
-        "knplabs/knp-menu-bundle":"dev-master",
+        "knplabs/knp-menu":"~1.1",
+        "knplabs/knp-menu-bundle":"~1.1",
         "jms/di-extra-bundle": "~1.4",
         "jms/security-extra-bundle": "dev-master",
         "jms/serializer-bundle": "dev-master",
@@ -44,7 +44,15 @@
 
     },
     "require-dev": {
-        "sensio/generator-bundle": "~2.3"
+        "sensio/generator-bundle": "~2.3",
+        "phpunit/phpunit": "4.1.*",
+        "phpmd/phpmd" : "2.0.*",
+        "pdepend/pdepend" : "2.0.0",
+        "zerkalica/php-code-browser": "dev-master",
+        "squizlabs/php_codesniffer": "1.*",
+        "sebastian/phpcpd": "*",
+        "phpdocumentor/phpdocumentor": "dev-master"
+
     },
     "scripts": {
         "post-root-package-install": [
