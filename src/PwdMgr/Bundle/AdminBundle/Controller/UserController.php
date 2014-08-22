@@ -89,19 +89,9 @@ class UserController extends Controller
 
                 if ($persist) {
                     $this->getService()->persist($object);
-                    /**
-                     * @TODO This should go in a service class
-                     * @var SSL $ssl
-                     */
-                    $ssl = $this->get('cwd.bundle.sslcrypt.ssl');
-                    $ssl->generateKey($request->getPassword());
-                    $key = new Key();
-                    $key->setPublic($ssl->getPublicKey())
-                        ->setPrivate($ssl->getPrivateKey())
-                        ->setUser($object);
-                    $this->getService()->persist($key);
+                    $this->getService()->createKeys($object, $request->getPassword());
                 }
-                $this->getService()->getEm()->flush();
+                $this->getService()->flush();
                 $this->flashSuccess('Data successfully saved');
 
                 return $this->redirect('/user/list');
@@ -123,7 +113,7 @@ class UserController extends Controller
      *
      * @Route("/delete/{id}")
      * @Secure(roles="ROLE_ADMIN")
-     * @Method({"GET"})
+     * @Method({"GET", "DELETE"})
      * @return Response
      */
     public function deleteAction(Request $request)

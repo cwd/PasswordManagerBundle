@@ -9,10 +9,12 @@
  */
 namespace PwdMgr\Service;
 
+use Cwd\Bundle\SSLCryptBundle\Services\SSL;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use JMS\DiExtraBundle\Annotation as DI;
 use Monolog\Logger;
+use PwdMgr\Model\Entity\Key;
 use PwdMgr\Service\Exception\UserNotFoundException as NotFoundException;
 use PwdMgr\Model\Entity\User as Entity;
 
@@ -26,15 +28,45 @@ use PwdMgr\Model\Entity\User as Entity;
 class User extends BaseService
 {
     /**
+     * @var SSL
+     */
+    protected $ssl;
+
+    /**
      * @param EntityManager $entityManager
      * @param Logger        $logger
+     * @param SSL           $ssl
      *
-     * @DI\InjectParams()
+     * @DI\InjectParams({
+     *      "ssl" = @DI\Inject("cwd.bundle.sslcrypt.ssl")
+     * })
      */
-    public function __construct(EntityManager $entityManager, Logger $logger)
+    public function __construct(EntityManager $entityManager, Logger $logger, SSL $ssl)
     {
-        $this->entityManager     = $entityManager;
-        $this->logger = $logger;
+        $this->entityManager = $entityManager;
+        $this->logger        = $logger;
+        $this->ssl           = $ssl;
+    }
+
+    /**
+     * Create new Keypair for given User with given Password
+     *
+     * @param Entity $user
+     * @param string $password
+     *
+     * @return Key
+     */
+    public function createKeys(Entity $user, $password)
+    {
+        $ssl = $this->getSSL();
+        $ssl->generateKey($password);
+        $key = new Key();
+        $key->setPublic($ssl->getPublicKey())
+            ->setPrivate($ssl->getPrivateKey())
+            ->setUser($user);
+        $this->getService()->persist($key);
+
+        return $key;
     }
 
     /**
@@ -73,6 +105,15 @@ class User extends BaseService
         }
 
         return $obj;
+    }
+
+    /**
+     * Get SSL Service Instance
+     * @return SSL
+     */
+    protected function getSSL()
+    {
+        return $this->ssl;
     }
 
     /**
