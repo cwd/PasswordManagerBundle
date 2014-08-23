@@ -29,8 +29,13 @@ class Main extends ContainerAware
     public function mainMenu(FactoryInterface $factory, array $options = array())
     {
         $menu = $factory->createItem('root');
+
         $menu->addChild('Dashboard', array('uri' => '/'))
             ->setAttribute('icon', 'fa fa-home');
+
+
+        $menu->addChild('Categories', array('route' => 'pwdmgr_admin_category_index'))
+            ->setAttribute('icon', 'fa fa-list');
 
         return $menu;
     }

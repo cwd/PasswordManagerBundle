@@ -83,8 +83,14 @@ class Store
     private $deletedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="PwdMgr\Model\Entity\Group", inversedBy="stores")
+     * @ORM\ManyToOne(targetEntity="PwdMgr\Model\Entity\Category", inversedBy="stores")
      * @ORM\JoinColumn(name="groupId", referencedColumnName="id", nullable=false)
+     */
+    private $category;
+
+    /**
+     * 
+     * 
      */
     private $group;
 
@@ -228,6 +234,26 @@ class Store
     public function setNote($note)
     {
         $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param mixed $category
+     *
+     * @return $this
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
 
         return $this;
     }

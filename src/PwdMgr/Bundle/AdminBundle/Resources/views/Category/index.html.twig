@@ -1,0 +1,95 @@
+{% extends 'PwdMgrAdminBundle::layout.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6" id="treearea">
+
+        </div>
+        <div class="col-md-6" id="categoryformarea">
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            var updateTree = function (tree) {
+                $.get('{{ path('pwdmgr_admin_category_tree') }}', function (data) {
+                    $('#treearea').html(data);
+
+                    $(tree).nestable({
+                        group: 1
+                    }).on('change', function (e) {
+                        var list = e.length ? e : $(e.target);
+                        $.post('{{ path('pwdmgr_admin_category_update') }}', {data: window.JSON.stringify(list.nestable('serialize'))}, function (data) {
+                            if (!data.success) {
+                                new PNotify({
+                                    type: 'error',
+                                    title: 'Error',
+                                    text: data.error
+                                });
+                            } else {
+                                new PNotify({
+                                    type: 'success',
+                                    title: 'Success',
+                                    text: 'Tree successfully saved'
+                                });
+                            }
+                        });
+                    });
+
+                    $(".dd a").on("mousedown", function(e) {
+                        e.preventDefault();
+                        return false;
+                    });
+                });
+            };
+
+            var submitFormHandler = function() {
+                $('#categoryForm').on('submit', function(e) {
+                    e.preventDefault();
+                    var $this = $(this);
+                    var data = $this.serialize();
+                    $.ajax({
+                        type: "POST",
+                        url: $this.attr('action'),
+                        data: data,
+                        success: function(data) {
+                            createForm(data);
+                            updateTree('#nestable');
+                        }
+                    });
+                });
+            }
+
+            var createForm = function(data) {
+                if (!!data) {
+                    $('#categoryformarea').html(data);
+                    submitFormHandler();
+                    return;
+                }
+
+                $.get('{{ path('pwdmgr_admin_category_create') }}', function (data) {
+                    $('#categoryformarea').html(data);
+                    submitFormHandler();
+                });
+
+
+            }
+
+            updateTree('#nestable');
+            createForm();
+
+            $(document).on('click', '.editNode', function(e) {
+                e.preventDefault();
+                $.get($(this).attr('href'), function (data) {
+                    $('#categoryformarea').html(data);
+                    submitFormHandler();
+                });
+            });
+
+        });
+    </script>
+{% endblock %}

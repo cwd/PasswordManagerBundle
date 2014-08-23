@@ -7,17 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PwdMgr\Model\Repository;
+namespace PwdMgr\Service\Exception;
 
-use Cwd\GenericBundle\Doctrine\EntityRepository;
+use Cwd\GenericBundle\Exception\ServiceException;
 
 /**
- * Group Repository
+ * CategoryNotFoundException
  *
  * @author Ludwig Ruderstaller <lr@cwd.at>
- * @SuppressWarnings("ShortVariable")
  */
-class GroupRepository extends EntityRepository
+class CategoryNotFoundException extends ServiceException
 {
 
 }
