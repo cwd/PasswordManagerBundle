@@ -2,7 +2,6 @@
 namespace PwdMgr\Model\Entity;
 
 use Doctrine\ORM\Mapping AS ORM;
-use Doctrine\Common\Collections\Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 

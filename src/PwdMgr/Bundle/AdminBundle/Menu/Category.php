@@ -9,10 +9,8 @@
  */
 namespace PwdMgr\Bundle\AdminBundle\Menu;
 
-use Doctrine\ORM\EntityManager;
 use Knp\Menu\FactoryInterface;
 use JMS\DiExtraBundle\Annotation as DI;
-use PwdMgr\Model\Repository\CategoryRepository;
 use Symfony\Component\DependencyInjection\ContainerAware;
 
 /**

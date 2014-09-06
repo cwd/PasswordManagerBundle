@@ -13,8 +13,6 @@ namespace PwdMgr\Bundle\AdminBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use JMS\DiExtraBundle\Annotation as DI;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Class Update Passhrase
@@ -25,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * @DI\Service("form_update_passphrase")
  * @DI\Tag("form.type")
  */
-class updatePassphraseType extends AbstractType
+class UpdatePassphraseType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder

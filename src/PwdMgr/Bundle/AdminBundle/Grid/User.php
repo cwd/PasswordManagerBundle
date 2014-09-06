@@ -86,4 +86,4 @@ class User extends Grid
             ->setHasAction(true)
             ->setSearch(true);
     }
-} 
+}

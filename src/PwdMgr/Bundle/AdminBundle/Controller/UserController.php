@@ -9,10 +9,8 @@
  */
 namespace PwdMgr\Bundle\AdminBundle\Controller;
 
-use PwdMgr\Model\Entity\Key;
 use PwdMgr\Model\Entity\User;
 use PwdMgr\Service\Exception\UserNotFoundException;
-use JMS\DiExtraBundle\Annotation as DI;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;

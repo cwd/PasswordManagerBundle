@@ -10,10 +10,8 @@
 namespace PwdMgr\Bundle\AdminBundle\Controller;
 
 use PwdMgr\Model\Entity\Category;
-use PwdMgr\Model\Entity\Key;
-use PwdMgr\Model\Entity\User;
+
 use PwdMgr\Service\Exception\UserNotFoundException;
-use JMS\DiExtraBundle\Annotation as DI;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -158,29 +156,7 @@ class CategoryController extends Controller
      */
     public function indexAction()
     {
-
-        $root = new Category();
-        $root->setName('Server');
-
-        /**
-        $dm = new Category();
-        $dm->setName('Digimagical');
-        $dm->setParent($root);
-
-        $hetzner = new Category();
-        $hetzner->setName('Hetzner');
-        $hetzner->setParent($root);
-
-        $this->getService()->getEm()->persist($root);
-        $this->getService()->getEm()->persist($dm);
-        $this->getService()->getEm()->persist($hetzner);
-        $this->getService()->flush();
-        $this->getService()->getEm()->clear();
-        **/
-
         return array();
-
-
     }
 
     /**

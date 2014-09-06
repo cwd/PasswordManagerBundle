@@ -10,7 +10,6 @@
 namespace PwdMgr\Service;
 
 use Cwd\Bundle\SSLCryptBundle\Services\SSL;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use JMS\DiExtraBundle\Annotation as DI;
 use Monolog\Logger;
