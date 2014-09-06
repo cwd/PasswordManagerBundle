@@ -15,6 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use JMS\DiExtraBundle\Annotation as DI;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Security\Core\SecurityContext;
 
 /**
  * Class User Form
@@ -27,6 +28,17 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class UserType extends AbstractType
 {
+    private $securityContext;
+
+    /**
+     * @param SecurityContext $security
+     *
+     * @DI\InjectParams()
+     */
+    public function __construct(SecurityContext $security)
+    {
+        $this->securityContext = $security;
+    }
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
@@ -45,15 +57,21 @@ class UserType extends AbstractType
                     'first_options' => ['label' => 'Password'],
                     'second_options' => ['label' => 'Repeat Password']
                 ]
-            )
-            ->add('rolesCollection', 'entity', [
-                    'class' => 'Model:Role',
-                    'property' => 'name',
-                    'label' => 'Roles',
-                    'multiple' => true,
-                    'attr' => ['data-plugin-selectTwo' => '']
-                ]
-            )
+            );
+
+        if ($this->securityContext->isGranted('ROLE_ADMIN')) {
+            $builder
+                ->add('rolesCollection', 'entity', [
+                        'class' => 'Model:Role',
+                        'property' => 'name',
+                        'label' => 'Roles',
+                        'multiple' => true,
+                        'attr' => ['data-plugin-selectTwo' => '']
+                    ]
+                );
+        }
+
+        $builder
             ->add('save', 'submit', ['label' => 'Save']);
     }
 

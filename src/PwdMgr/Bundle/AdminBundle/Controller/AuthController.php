@@ -107,17 +107,15 @@ class AuthController extends Controller
     /**
      * Lets user update his profile
      *
-     * @param Request $request
-     *
      * @Route("/profile")
      * @Method({"GET", "POST"})
-     * @Template()
+     * @Secure(roles="ROLE_USER")
      *
-     * @return array
+     * @return Response
      */
-    public function profileAction(Request $request)
+    public function profileAction()
     {
-
+        return $this->redirect($this->generateUrl('pwdmgr_admin_user_edit', array('id' => $this->getUser()->getId())));
     }
 
     /**

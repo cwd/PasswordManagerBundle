@@ -223,6 +223,14 @@ class User implements UserInterface
     }
 
     /**
+     * @return string
+     */
+    public function getStringId()
+    {
+        return strval($this->getId());
+    }
+
+    /**
      * @param int $id
      *
      * @return $this

@@ -25,7 +25,7 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
  *
  * @package PwdMgr\AdminBundle\Controller
  * @author  Ludwig Ruderstaller <lr@cwd.at>
- * @PreAuthorize("hasRole('ROLE_ADMIN')")
+ * @PreAuthorize("hasRole('ROLE_USER')")
  * @Route("/user")
  */
 class UserController extends Controller
@@ -49,20 +49,24 @@ class UserController extends Controller
      * @param Request $request
      *
      * @Route("/edit/{id}")
-     * @Secure(roles="ROLE_ADMIN")
      * @Method({"GET", "POST"})
+     * @PreAuthorize("hasRole('ROLE_ADMIN') or user.getStringId() == #request.get('id')")
      * @return array
      */
     public function editAction(Request $request)
     {
         try {
-            $asset = $this->getService()->find($request->get('id'));
+            $user = $this->getService()->find($request->get('id'));
 
-            return $this->formHandler($asset, $request);
+            return $this->formHandler($user, $request);
         } catch (UserNotFoundException $e) {
             $this->flashError(sprintf('Row with ID %s not found', $request->get('id')));
 
-            return $this->redirect('/user/list');
+            if ($this->getContext()->isGranted('ROLE_ADMIN')) {
+                return $this->redirect($this->generateUrl('pwdmgr_admin_user_list'));
+            }
+
+            return $this->redirect($this->generateUrl('/'));
         } catch (\Exception $e) {
             $this->getLogger()->addCritical($e->getMessage());
         }
@@ -98,7 +102,11 @@ class UserController extends Controller
                     return $this->redirect('/auth/updatesecret');
                 }
 
-                return $this->redirect('/user/list');
+                if ($this->getContext()->isGranted('ROLE_ADMIN')) {
+                    return $this->redirect($this->generateUrl('pwdmgr_admin_user_list'));
+                }
+
+                return $this->redirect('/');
             } catch (\Exception $e) {
                 $this->flashError('Error while saving Data: '.$e->getMessage());
             }
@@ -153,6 +161,7 @@ class UserController extends Controller
      * Grid action
      *
      * @Route("/grid")
+     * @Secure(roles="ROLE_ADMIN")
      * @return Response
      * @Method({"GET"})
      */
@@ -164,6 +173,7 @@ class UserController extends Controller
     /**
      * @Route("/")
      * @Template()
+     * @Secure(roles="ROLE_ADMIN")
      * @Method({"GET"})
      *
      * @return array
