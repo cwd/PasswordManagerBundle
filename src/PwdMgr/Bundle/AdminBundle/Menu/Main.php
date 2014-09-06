@@ -28,14 +28,25 @@ class Main extends ContainerAware
      */
     public function mainMenu(FactoryInterface $factory, array $options = array())
     {
+        $context    = $this->container->get('security.context');
+        $request    = $this->container->get('request');
+
+        $superadmin = $context->isGranted('ROLE_SUPER_ADMIN');
+        $admin      = $context->isGranted('ROLE_ADMIN');
+
         $menu = $factory->createItem('root');
 
         $menu->addChild('Dashboard', array('uri' => '/'))
             ->setAttribute('icon', 'fa fa-home');
 
 
-        $menu->addChild('Categories', array('route' => 'pwdmgr_admin_category_index'))
-            ->setAttribute('icon', 'fa fa-list');
+        if ($admin) {
+            $menu->addChild('Categories', array('route' => 'pwdmgr_admin_category_index'))
+                ->setAttribute('icon', 'fa fa-list');
+
+            $menu->addChild('Users', array('route' => 'pwdmgr_admin_user_index'))
+                ->setAttribute('icon', 'fa fa-users');
+        }
 
         return $menu;
     }

@@ -37,9 +37,9 @@ class SSL
         'emailAddress' => 'myuser@host.at'
     );
 
-    protected $publicKey;
+    protected $publicKey = null;
 
-    protected $secretKey;
+    protected $secretKey = null;
 
     /**
      * Generate new private key
@@ -66,10 +66,7 @@ class SSL
      */
     public function decrypt($encrypted, $envKeys, $privKey, $password)
     {
-        $key = openssl_get_privatekey($privKey, $password);
-        if (!$key) {
-            throw new \Exception('PrivateKey Password is invalid');
-        }
+        $key = $this->openPrivateKey($privKey, $password);
 
         foreach ($envKeys as $envKey) {
             openssl_open(base64_decode($encrypted), $data, base64_decode($envKey), $key);
@@ -113,6 +110,49 @@ class SSL
             'data'   => base64_encode($encryptedData),
             'envKey' => $envKey
         );
+    }
+
+    /**
+     * @param string      $newPassphrase
+     * @param string      $oldPassphrase
+     * @param string|null $privateKey
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function updatePassphrase($newPassphrase, $oldPassphrase, $privateKey = null)
+    {
+        if ($privateKey === null) {
+            if (($privateKey = $this->getPrivateKey() === null)) {
+                throw new \Exception('Secret Key not set and not given as parameter');
+            }
+        }
+
+        $privateKey = $this->openPrivateKey($privateKey, $oldPassphrase);
+
+        if (openssl_pkey_export($privateKey, $result, $newPassphrase) === false) {
+            throw new \Exception('Passphrase change failed: '. openssl_error_string());
+        }
+
+        return $result;
+    }
+
+    /**
+     * Open PrivateKey
+     * @param string $privKey
+     * @param string $password
+     *
+     * @return bool|resource
+     * @throws \Exception
+     */
+    public function openPrivateKey($privKey, $password)
+    {
+        $key = openssl_get_privatekey($privKey, $password);
+        if (!$key) {
+            throw new \Exception('PrivateKey Password is invalid ('.openssl_error_string().')');
+        }
+
+        return $key;
     }
 
     /**

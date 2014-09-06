@@ -94,6 +94,10 @@ class UserController extends Controller
                 $this->getService()->flush();
                 $this->flashSuccess('Data successfully saved');
 
+                if ($persist) {
+                    return $this->redirect('/auth/updatesecret');
+                }
+
                 return $this->redirect('/user/list');
             } catch (\Exception $e) {
                 $this->flashError('Error while saving Data: '.$e->getMessage());

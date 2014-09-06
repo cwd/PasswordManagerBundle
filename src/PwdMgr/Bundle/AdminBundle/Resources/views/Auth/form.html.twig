@@ -1,0 +1,29 @@
+{% extends 'PwdMgrAdminBundle::layout.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <i class="fa fa-info fa-lg"></i> This is the password for your secret key, it has nothing todo with your password you use when you login. <b>It should not be the same</b>!
+            </div>
+
+            <section class="panel panel-featured panel-featured-primary">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-times"></a>
+                    </div>
+
+                    <h2 class="panel-title">{{ title }}</h2>
+                </header>
+                <div class="panel-body">
+                    {{ form(form, {'style': 'horizontal', 'col_size': 'xs', 'align_with_widget': true, 'attr': {'novalidate': 'novalidate'}}) }}
+                </div>
+
+            </section>
+        </div>
+    </div>
+
+
+{% endblock %}

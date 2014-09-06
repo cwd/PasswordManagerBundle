@@ -1,7 +1,2 @@
 services:
-    # aliases for auto-wiring
-    container: @service_container
-    em: @doctrine.orm.entity_manager
-    entity_manager: @doctrine.orm.entity_manager
-    dispatcher: @event_dispatcher
-    security: @security.context
+

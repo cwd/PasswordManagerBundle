@@ -1,22 +1,12 @@
-<?xml version="1.0" ?>
+services:
+    # aliases for auto-wiring
+    container: @service_container
+    em: @doctrine.orm.entity_manager
+    entity_manager: @doctrine.orm.entity_manager
+    dispatcher: @event_dispatcher
+    security: @security.context
 
-<container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
-<!--
-    <parameters>
-        <parameter key="adm_mgr_admin.example.class">PwdMgr\Bundle\AdminBundle\Example</parameter>
-    </parameters>
-
-
-    <services>
-        <service id="gedmo.listener.softdeleteable" class="Gedmo\SoftDeleteable\SoftDeleteableListener">
-
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
-        </service>
-    </services>
--->
-</container>
+    kernel.listener.ajax_authentication_listener:
+        class: Cwd\GenericBundle\Event\AjaxAuthenticationListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 250 }

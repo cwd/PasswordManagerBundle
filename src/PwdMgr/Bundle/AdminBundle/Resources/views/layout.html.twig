@@ -10,15 +10,41 @@
         {% block currentuser %}
             <a href="#" data-toggle="dropdown">
                 <figure class="profile-picture">
-                    <img src="{{ asset('bundles/cwdadminporto/assets/images/!logged-user.jpg') }}" alt="Joseph Doe" class="img-circle" data-lock-picture="{{ asset('bundles/cwdadminporto/assets/images/!logged-user.jpg') }}" />
+                    <img src="{{  app.user.username|gravatar(40) }}" alt="{{ app.user.firstname }} {{ app.user.lastname }}" class="img-circle" data-lock-picture="{{  app.user.username|gravatar(150) }}" />
                 </figure>
-                <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
-                    <span class="name">Ludwig Ruderstaller</span>
-                    <span class="role">administrator</span>
+                <div class="profile-info" data-lock-name="{{ app.user.firstname }} {{ app.user.lastname }}" data-lock-email="{{ app.user.email }}">
+                    <span class="name">{{ app.user.firstname }} {{ app.user.lastname }}</span>
+                    <span class="role">{{ app.user.roles.0 }}</span>
                 </div>
 
                 <i class="fa custom-caret"></i>
             </a>
+        {% endblock %}
+
+        {% block currentuser_menu %}
+            <div class="dropdown-menu">
+                <ul class="list-unstyled">
+                    <li class="divider"></li>
+                    <!--
+                    <li>
+                        <a role="menuitem" tabindex="-1" href="pages-user-profile.html"><i class="fa fa-user"></i> My Profile</a>
+                    </li>
+                    <li>
+                        <a role="menuitem" tabindex="-1" href="#" data-lock-screen="true"><i class="fa fa-lock"></i> Lock Screen</a>
+                    </li>
+                    -->
+                    <li>
+                        <a role="menuitem" tabindex="2" href="{{ path('pwdmgr_admin_auth_profile') }}"><i class="fa fa-user"></i> Update profile</a>
+                    </li>
+                    <li>
+                        <a role="menuitem" tabindex="2" href="{{ path('pwdmgr_admin_auth_updatesecretpassword') }}"><i class="fa fa-lock"></i> Change secret password</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a role="menuitem" tabindex="-1" href="{{ path('auth_logout') }}"><i class="fa fa-power-off"></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
         {% endblock %}
     {% endembed %}
 {% endblock %}
@@ -66,5 +92,34 @@
     {% endblock %}
 
     {% block content %}{% endblock %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(document).ajaxError(function (event, jqXHR) {
+                if (403 === jqXHR.status) {
+                    new PNotify({
+                        type: 'error',
+                        title: 'Error',
+                        text: 'Your Session timed out<br />Redirecting to login in 3 seconds'
+                    });
+                    window.setTimeout(function(){
+                        window.location.reload();
+                    }, 3000);
+                }
+            });
 
+            var $document, idleTime;
+            $document = $(document);
+
+            /*
+            $(function() {
+                //$.idleTimer( (10*60*1000) ); // 10 Minute Timeout
+                $.idleTimer(5000);
+
+                $document.on( 'idle.idleTimer', function() {
+                    LockScreen.show();
+                });
+            });
+            */
+        });
+    </script>
 {% endblock %}
