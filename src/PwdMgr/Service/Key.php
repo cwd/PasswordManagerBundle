@@ -14,19 +14,18 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use JMS\DiExtraBundle\Annotation as DI;
 use Monolog\Logger;
-use PwdMgr\Model\Entity\Key as KeyEntity;
-use PwdMgr\Service\Key as KeyService;
+use PwdMgr\Model\Entity\User;
 use PwdMgr\Service\Exception\UserNotFoundException as NotFoundException;
-use PwdMgr\Model\Entity\User as Entity;
+use PwdMgr\Model\Entity\Key as Entity;
 
 /**
  * User Service Class
  *
  * @author Ludwig Ruderstaller <lr@cwd.at>
- * @DI\Service("service_user")
+ * @DI\Service("service_key")
  * @SuppressWarnings("ShortVariable")
  */
-class User extends BaseService
+class Key extends BaseService
 {
     /**
      * @var SSL
@@ -34,80 +33,77 @@ class User extends BaseService
     protected $ssl;
 
     /**
-     * @var KeyService
-     */
-    protected $serviceKey;
-
-    /**
      * @param EntityManager $entityManager
      * @param Logger        $logger
-     * @param KeyService    $serviceKey
+     * @param SSL           $ssl
      *
      * @DI\InjectParams({
-     *      "serviceKey" = @DI\Inject("service_key")
+     *      "ssl" = @DI\Inject("cwd.bundle.sslcrypt.ssl")
      * })
      */
-    public function __construct(EntityManager $entityManager, Logger $logger, KeyService $serviceKey)
+    public function __construct(EntityManager $entityManager, Logger $logger, SSL $ssl)
     {
         $this->entityManager = $entityManager;
         $this->logger        = $logger;
-        $this->serviceKey    = $serviceKey;
+        $this->ssl           = $ssl;
     }
 
     /**
      * Create new Keypair for given User with given Password
      *
-     * @param Entity $user
+     * @param User   $user
      * @param string $password
      *
-     * @return KeyEntity
+     * @return Key
      */
-    public function createKeys(Entity $user, $password)
+    public function createKeys(User $user, $password)
     {
-        return $this->getKeyService()->createKeys($user, $password);
+        $ssl = $this->getSSL();
+        $ssl->generateKey($password);
+        $key = new Entity();
+        $key->setPublic($ssl->getPublicKey())
+            ->setPrivate($ssl->getPrivateKey())
+            ->setUser($user);
+        $this->getService()->persist($key);
+
+        return $key;
     }
 
     /**
      * Check Password against Key
-     * @param Entity $user
+     * @param Entity $key
      * @param string $password
      *
      * @return bool
      */
-    public function checkKeyPassword(Entity $user, $password)
+    public function checkKeyPassword(Entity $key, $password)
     {
-        return $this->getKeyService()->checkKeyPassword($user->getKey(), $password);
+        try {
+            $this->getSSL()->openPrivateKey($key->getPrivate(), $password);
+        } catch (\Exception $e) {
+            $this->getLogger()->info($e->getMessage());
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
-     * @param Entity $user
+     * @param Entity $key
      * @param string $oldPassword
      * @param string $newPassword
      *
-     * @return Key
+     * @return Entity
      * @throws \Exception
      */
-    public function updatePasshrase(Entity $user, $oldPassword, $newPassword)
+    public function updatePasshrase($key, $oldPassword, $newPassword)
     {
-        return $this->getKeyService()->updatePasshrase($user->getKey(), $oldPassword, $newPassword);
-    }
+        $ssl = $this->getSSL();
+        $privateKey = $ssl->updatePassphrase($newPassword, $oldPassword, $key->getPrivate());
+        $key->setPrivate($privateKey);
 
-    /**
-     * @return ArrayCollection
-     */
-    public function fetchAll()
-    {
-        return $this->entityManager->getRepository('Model:User')->findby(array(), array('name' => 'ASC'));
-    }
-
-    /**
-     * @param array $where
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCount($where = array())
-    {
-        return parent::getCountByModel('Model:User', $where);
+        return $key;
     }
 
     /**
@@ -115,12 +111,12 @@ class User extends BaseService
      *
      * @param int $id
      *
-     * @return \PwdMgr\Model\Entity\User
+     * @return Entity
      * @throws NotFoundException
      */
     public function find($id)
     {
-        $obj = parent::findById('Model:User', intval($id));
+        $obj = parent::findById('Model:Key', intval($id));
 
         if ($obj === null) {
             $this->getLogger()->info('Row with ID {id} not found', array('id' => $id));
@@ -131,12 +127,12 @@ class User extends BaseService
     }
 
     /**
-     * Get Key Service
-     * @return KeyService
+     * Get SSL Service Instance
+     * @return SSL
      */
-    protected function getKeyService()
+    protected function getSSL()
     {
-        return $this->serviceKey;
+        return $this->ssl;
     }
 
     /**
