@@ -108,7 +108,7 @@ class AuthController extends Controller
      * Lets user update his profile
      *
      * @Route("/profile")
-     * @Method({"GET", "POST"})
+     * @Method({"GET"})
      * @Secure(roles="ROLE_USER")
      *
      * @return Response
