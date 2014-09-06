@@ -42,7 +42,6 @@ class User extends Grid
      */
     public function get()
     {
-        $instance = $this;
 
         return $this->getDatatable()
             ->setEntity('Model:User', 'x')
