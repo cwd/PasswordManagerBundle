@@ -11,7 +11,6 @@ namespace PwdMgr\Service;
 
 use Cwd\GenericBundle\Exception\PersistanceException;
 use Doctrine\Common\Collections\Collection;
-use JMS\DiExtraBundle\Annotation as DI;
 use Cwd\GenericBundle\BaseService as CwdService;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;

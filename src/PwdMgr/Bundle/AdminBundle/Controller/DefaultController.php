@@ -22,6 +22,7 @@ class DefaultController extends Controller
     /**
      * @Route("/")
      * @Method("GET")
+     * @Secure(roles="ROLE_USER")
      * @Template()
      */
     public function indexAction()

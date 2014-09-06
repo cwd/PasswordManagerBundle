@@ -70,7 +70,7 @@ class User extends Grid
                 ]
             )
             ->setRenderer(
-                function (&$data) use ($instance)
+                function (&$data)
                 {
                     foreach ($data as $key => $value) {
                         if ($key == 4) {
