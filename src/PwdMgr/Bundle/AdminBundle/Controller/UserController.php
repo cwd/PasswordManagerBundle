@@ -9,7 +9,6 @@
  */
 namespace PwdMgr\Bundle\AdminBundle\Controller;
 
-use Oneup\AclBundle\Security\Authorization\Acl\AclProvider;
 use PwdMgr\Model\Entity\User;
 use PwdMgr\Service\Exception\UserNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +18,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
@@ -152,6 +150,7 @@ class UserController extends Controller
      * @param User    $user
      *
      * @Route("/permission/{id}")
+     * @Method({"POST", "GET"})
      * @ParamConverter("user", class="Model:User")
      * @Secure(roles="ROLE_ADMIN")
      * @Template()
