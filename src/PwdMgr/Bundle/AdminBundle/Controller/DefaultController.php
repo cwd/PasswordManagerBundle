@@ -29,9 +29,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $category = $this->get('service_category')->find(54);
-
-        return array('name' => 'fff', 'category' => $category, 'user' => $this->getUser());
+        return array('name' => 'fff');
     }
 
     /**
