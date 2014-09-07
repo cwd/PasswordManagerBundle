@@ -17,6 +17,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Rollerworks\Bundle\PasswordStrengthBundle\Validator\Constraints as RollerworksPassword;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Acl\Permission\MaskBuilder;
+use Oneup\AclBundle\Mapping\Annotation as Acl;
 
 /**
  * PwdMgr\Model\Entity\User
@@ -25,6 +27,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @Gedmo\Loggable
  * @UniqueEntity("email")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=true)
+ * @Acl\DomainObject({
+ *   @Acl\ClassPermission({ "ROLE_ADMIN" = MaskBuilder::MASK_IDDQD })
+ * })
  */
 class User implements UserInterface
 {

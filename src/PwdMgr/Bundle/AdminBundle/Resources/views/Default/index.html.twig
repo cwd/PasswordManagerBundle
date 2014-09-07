@@ -9,6 +9,19 @@
 {% block content %}
     <div class="row">
     <div class="col-md-9">
+
+        {% if is_granted('VIEW', category) %}
+            <p>User Is Granted on {{ category.name }}</p>
+        {% else %}
+            <p>NOT Granted on {{ category.name }}</p>
+        {% endif %}
+        <hr />
+        {% if has_permission('VIEW', 'PwdMgr\\Model\\Entity\\Category', user) %}
+            <p>Has permission: TRUE</p>
+        {% else %}
+            <p>Has permission: FALSE</p>
+        {% endif %}
+
     <section class="panel">
         <header class="panel-heading">
             <div class="panel-actions">

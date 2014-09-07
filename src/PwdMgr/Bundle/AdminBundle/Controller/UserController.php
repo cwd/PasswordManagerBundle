@@ -9,6 +9,7 @@
  */
 namespace PwdMgr\Bundle\AdminBundle\Controller;
 
+use Oneup\AclBundle\Security\Authorization\Acl\AclProvider;
 use PwdMgr\Model\Entity\User;
 use PwdMgr\Service\Exception\UserNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 use JMS\SecurityExtraBundle\Annotation\Secure;
+use Symfony\Component\Security\Acl\Permission\MaskBuilder;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * Class UserController
@@ -45,17 +49,17 @@ class UserController extends Controller
 
     /**
      * @param Request $request
+     * @param User    $user
      *
+     * @ParamConverter("user", class="Model:User")
      * @Route("/edit/{id}")
      * @Method({"GET", "POST"})
-     * @PreAuthorize("hasRole('ROLE_ADMIN') or user.getStringId() == #request.get('id')")
+     * @PreAuthorize("hasRole('ROLE_ADMIN') or hasPermission(#user, 'EDIT')")
      * @return array
      */
-    public function editAction(Request $request)
+    public function editAction(Request $request, User $user)
     {
         try {
-            $user = $this->getService()->find($request->get('id'));
-
             return $this->formHandler($user, $request);
         } catch (UserNotFoundException $e) {
             $this->flashError(sprintf('Row with ID %s not found', $request->get('id')));
@@ -63,8 +67,6 @@ class UserController extends Controller
             if ($this->getContext()->isGranted('ROLE_ADMIN')) {
                 return $this->redirect($this->generateUrl('pwdmgr_admin_user_list'));
             }
-
-            return $this->redirect($this->generateUrl('/'));
         } catch (\Exception $e) {
             $this->getLogger()->addCritical($e->getMessage());
         }
@@ -97,6 +99,9 @@ class UserController extends Controller
                 $this->flashSuccess('Data successfully saved');
 
                 if ($persist) {
+                    $this->getAclManager()->addObjectPermission($object, MaskBuilder::MASK_OPERATOR, $object);
+                    $this->getAclManager()->addObjectFieldPermission($object, 'roles', MaskBuilder::MASK_VIEW, $object);
+
                     return $this->redirect('/auth/updatesecret');
                 }
 
@@ -138,6 +143,31 @@ class UserController extends Controller
         }
 
         return $this->redirect('/user/list');
+    }
+
+    /**
+     * Set/Edit a Users permission
+     *
+     * @param Request $request
+     * @param User    $user
+     *
+     * @Route("/permission/{id}")
+     * @ParamConverter("user", class="Model:User")
+     * @Secure(roles="ROLE_ADMIN")
+     * @Template()
+     * @return Response
+     */
+    public function permissionAction(Request $request, User $user)
+    {
+        if ($request->isMethod('post')) {
+            $this->getService()->setGlobalPermission($user,
+                array('category' => $request->get('category'), 'store' => $request->get('store')),
+                $this->getAclManager()
+            );
+            $this->getService()->flush();
+        }
+
+        return array('user' => $user);
     }
 
     /**

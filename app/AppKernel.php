@@ -31,6 +31,7 @@ class AppKernel extends Kernel
             new VMelnik\DoctrineEncryptBundle\VMelnikDoctrineEncryptBundle(),
             new PwdMgr\Bundle\AdminBundle\PwdMgrAdminBundle(),
             new Cwd\Bundle\SSLCryptBundle\CwdSSLCryptBundle(),
+            new Oneup\AclBundle\OneupAclBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

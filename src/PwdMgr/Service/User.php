@@ -14,10 +14,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use JMS\DiExtraBundle\Annotation as DI;
 use Monolog\Logger;
+use Oneup\AclBundle\Security\Acl\Manager\AclManager;
 use PwdMgr\Model\Entity\Key as KeyEntity;
 use PwdMgr\Service\Key as KeyService;
 use PwdMgr\Service\Exception\UserNotFoundException as NotFoundException;
 use PwdMgr\Model\Entity\User as Entity;
+use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 
 /**
  * User Service Class
@@ -108,6 +110,34 @@ class User extends BaseService
     public function getCount($where = array())
     {
         return parent::getCountByModel('Model:User', $where);
+    }
+
+    /**
+     * @param Entity     $user
+     * @param array      $permission
+     * @param AclManager $aclManager
+     */
+    public function setGlobalPermission(Entity $user, array $permission, AclManager $aclManager)
+    {
+        $this->getLogger()->addInfo(print_r($permission, 1));
+        $keys = array('category' => 'PwdMgr\Model\Entity\Category', 'store' => 'PwdMgr\Model\Entity\Store');
+        foreach ($keys as $key => $class) {
+            $this->getLogger()->addInfo('Removing Permissions for '.$class);
+            $aclManager->revokeClassPermissions($class, $user);
+
+            $this->getLogger()->addInfo('Searching for Key: "'.$key.'"');
+            if (isset($permission[$key])) {
+                $builder = new MaskBuilder();
+                foreach ($permission[$key] as $perm => $state) {
+                    $this->getLogger()->addInfo('Builder set '.$perm);
+                    if ($state) {
+                        $builder->add($perm);
+                    }
+                }
+
+                $aclManager->addClassPermission($class, $builder->get(), $user);
+            }
+        }
     }
 
     /**

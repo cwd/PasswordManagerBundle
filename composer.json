@@ -40,7 +40,8 @@
         "cwd/adminporto-bundle" : "dev-master",
         "spomky-labs/role-hierarchy-bundle": "dev-master",
         "rollerworks/password-strength-bundle": "master-dev",
-        "vmelnik/doctrine-encrypt-bundle": "dev-master"
+        "vmelnik/doctrine-encrypt-bundle": "dev-master",
+	 "oneup/acl-bundle": "~0.12"
 
     },
     "require-dev": {

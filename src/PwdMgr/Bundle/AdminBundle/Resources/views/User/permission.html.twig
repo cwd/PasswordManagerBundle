@@ -1,0 +1,135 @@
+{% extends 'PwdMgrAdminBundle::layout.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <section class="panel panel-featured panel-featured-primary">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-times"></a>
+                    </div>
+
+                    <h2 class="panel-title">{{ "User permissions for <b>%firstname% %lastname%</b>"|trans({'%firstname%': user.firstname, '%lastname%': user.lastname})|raw }}</h2>
+                </header>
+                <div class="panel-body">
+                    <div class="tabs tabs-primary">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#tab-1" data-toggle="tab"><i class="fa fa-globe"></i> Global Permissions</a>
+                            </li>
+                            <li>
+                                <a href="#tab-2" data-toggle="tab">Store Permissions</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="tab-1" class="tab-pane active">
+                                <div class="table-responsive">
+                                    <form class="form-horizontal form-bordered" method="POST">
+                                    <table class="table table-hover mb-none">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>View</th>
+                                                <th>Create</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Categories</td>
+                                                <td>
+                                                    <div class="switch switch-sm switch-primary">
+                                                        <input type="checkbox" name="category[VIEW]" value="1"
+                                                               data-plugin-ios-switch
+                                                               {% if has_permission('VIEW', 'PwdMgr\\Model\\Entity\\Category', user) %}checked="checked"{% endif %}
+                                                        />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="switch switch-sm switch-primary">
+                                                        <input type="checkbox" name="category[CREATE]" value="1"
+                                                               data-plugin-ios-switch
+                                                               {% if has_permission('CREATE', 'PwdMgr\\Model\\Entity\\Category', user) %}checked="checked"{% endif %}
+                                                                />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="switch switch-sm switch-primary">
+                                                        <input type="checkbox" name="category[EDIT]" value="1"
+                                                               data-plugin-ios-switch
+                                                               {% if has_permission('EDIT', 'PwdMgr\\Model\\Entity\\Category', user) %}checked="checked"{% endif %}
+                                                                />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="switch switch-sm switch-primary">
+                                                        <input type="checkbox" name="category[DELETE]" value="1"
+                                                               data-plugin-ios-switch
+                                                               {% if has_permission('DELETE', 'PwdMgr\\Model\\Entity\\Category', user) %}checked="checked"{% endif %}
+                                                                />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Store</td>
+                                                <td>
+                                                    <div class="switch switch-sm switch-primary">
+                                                        <input type="checkbox" name="store[VIEW]" value="1"
+                                                               data-plugin-ios-switch
+                                                               {% if has_permission('VIEW', 'PwdMgr\\Model\\Entity\\Store', user) %}checked="checked"{% endif %}
+                                                                />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="switch switch-sm switch-primary">
+                                                        <input type="checkbox" name="store[CREATE]" value="1"
+                                                               data-plugin-ios-switch
+                                                               {% if has_permission('CREATE', 'PwdMgr\\Model\\Entity\\Store', user) %}checked="checked"{% endif %}
+                                                                />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="switch switch-sm switch-primary">
+                                                        <input type="checkbox" name="store[EDIT]" value="1"
+                                                               data-plugin-ios-switch
+                                                               {% if has_permission('EDIT', 'PwdMgr\\Model\\Entity\\Store', user) %}checked="checked"{% endif %}
+                                                                />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="switch switch-sm switch-primary">
+                                                        <input type="checkbox" name="store[DELETE]" value="1"
+                                                               data-plugin-ios-switch
+                                                               {% if has_permission('DELETE', 'PwdMgr\\Model\\Entity\\Store', user) %}checked="checked"{% endif %}
+                                                                />
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                    <hr />
+                                    <div class="input-group">
+                                        <button type="submit" name="submit" class="btn btn-primary">{{ "Save"|trans }}</button>
+                                    </div>
+
+                                    </form>
+                                </div>
+                            </div>
+
+
+                            <div id="tab-2" class="tab-pane">
+                                <p>Recent</p>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitat.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </div>
+{% endblock %}

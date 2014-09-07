@@ -46,3 +46,5 @@ security:
 
     acl:
         connection: default
+
+    access_denied_url: /403

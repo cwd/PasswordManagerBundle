@@ -59,9 +59,10 @@ class User extends Grid
             ->setRenderers(
                 [
                     5 => [
-                        'view' => 'CwdAdminPortoBundle:Grid:_actions.html.twig',
+                        'view' => 'PwdMgrAdminBundle:User:_actions.html.twig',
                         'params' => [
                             'edit_route'     => 'pwdmgr_admin_user_edit',
+                            'permission_route'     => 'pwdmgr_admin_user_permission',
                             //'delete_route'   => 'acme_demo_welcome_delete',
                             //'undelete_route' => 'itasset_admin_user_undelete',
                         ],

@@ -63,7 +63,7 @@ class Key extends BaseService
         $key->setPublic($ssl->getPublicKey())
             ->setPrivate($ssl->getPrivateKey())
             ->setUser($user);
-        $this->getService()->persist($key);
+        $this->getEm()->persist($key);
 
         return $key;
     }

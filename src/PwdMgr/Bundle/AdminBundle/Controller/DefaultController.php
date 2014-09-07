@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 use JMS\SecurityExtraBundle\Annotation\Secure;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Class DefaultController
@@ -24,9 +25,25 @@ class DefaultController extends Controller
      * @Method("GET")
      * @Secure(roles="ROLE_USER")
      * @Template()
+     * @return array()
      */
     public function indexAction()
     {
-        return array('name' => 'fff');
+        $category = $this->get('service_category')->find(54);
+
+        return array('name' => 'fff', 'category' => $category, 'user' => $this->getUser());
+    }
+
+    /**
+     * @Route("/403")
+     * @Method("GET")
+     *
+     * @return RedirectResponse
+     */
+    public function accessDeniedAction()
+    {
+        $this->flashError('Security - 403 FORBIDDEN');
+
+        return $this->redirect('/');
     }
 }

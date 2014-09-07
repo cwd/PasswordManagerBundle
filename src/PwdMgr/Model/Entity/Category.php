@@ -4,6 +4,8 @@ namespace PwdMgr\Model\Entity;
 use Doctrine\ORM\Mapping AS ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Acl\Permission\MaskBuilder;
+use Oneup\AclBundle\Mapping\Annotation as Acl;
 
 
 /**
@@ -14,6 +16,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=true)
  * @ORM\Entity(repositoryClass="PwdMgr\Model\Repository\CategoryRepository")
  * @ORM\Table(name="Category")
+ * @Acl\DomainObject({
+ *   @Acl\ClassPermission({ "ROLE_ADMIN" = MaskBuilder::MASK_IDDQD })
+ * })
  */
 class Category
 {

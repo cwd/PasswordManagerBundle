@@ -13,12 +13,19 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use VMelnik\DoctrineEncryptBundle\Configuration\Encrypted;
+use Symfony\Component\Security\Acl\Permission\MaskBuilder;
+use Oneup\AclBundle\Mapping\Annotation as Acl;
 
 
 /**
+ * Entity Key
+ *
  * @ORM\Entity(repositoryClass="PwdMgr\Model\Repository\KeyRepository")
  * @ORM\Table(name="Keystore")
  * @Gedmo\Loggable
+ * @Acl\DomainObject({
+ *   @Acl\ClassPermission({ "ROLE_ADMIN" = MaskBuilder::MASK_IDDQD })
+ * })
  */
 class Key
 {

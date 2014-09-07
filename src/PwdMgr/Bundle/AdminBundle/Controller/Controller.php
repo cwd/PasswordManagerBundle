@@ -10,8 +10,9 @@
 namespace PwdMgr\Bundle\AdminBundle\Controller;
 
 use Monolog\Logger;
+use Oneup\AclBundle\Security\Acl\Manager\AclManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as SymfonyController;
-use JMS\DiExtraBundle\Annotation as DI;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Security\Core\SecurityContext;
 
 /**
@@ -27,6 +28,17 @@ class Controller extends SymfonyController
      * @var Logger
      */
     protected $logger = null;
+
+    /**
+     * @return AclManager
+     */
+    protected function getAclManager()
+    {
+        if (!$this->container->has('oneup_acl.manager')) {
+            throw new ServiceNotFoundException('OneUp ACL Manager not set');
+        }
+        return $this->container->get('oneup_acl.manager');
+    }
 
     /**
      * @return SecurityContext

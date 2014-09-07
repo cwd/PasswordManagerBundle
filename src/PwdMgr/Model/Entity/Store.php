@@ -15,11 +15,18 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use VMelnik\DoctrineEncryptBundle\Configuration\Encrypted;
+use Symfony\Component\Security\Acl\Permission\MaskBuilder;
+use Oneup\AclBundle\Mapping\Annotation as Acl;
 
 /**
+ * Store Entity
+ *
  * @ORM\Entity(repositoryClass="PwdMgr\Model\Repository\StoreRepository")
  * @Gedmo\Loggable
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=true)
+ * @Acl\DomainObject({
+ *   @Acl\ClassPermission({ "ROLE_ADMIN" = MaskBuilder::MASK_IDDQD })
+ * })
  */
 class Store
 {
