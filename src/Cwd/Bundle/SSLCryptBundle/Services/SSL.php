@@ -70,7 +70,7 @@ class SSL
 
         foreach ($envKeys as $envKey) {
             openssl_open(base64_decode($encrypted), $data, base64_decode($envKey), $key);
-            if ($data != null) {
+            if ($data !== null) {
                 openssl_free_key($key);
 
                 return $data;

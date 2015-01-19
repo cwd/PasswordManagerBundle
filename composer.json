@@ -41,7 +41,7 @@
         "spomky-labs/role-hierarchy-bundle": "dev-master",
         "rollerworks/password-strength-bundle": "master-dev",
         "vmelnik/doctrine-encrypt-bundle": "dev-master",
-	 "oneup/acl-bundle": "~0.12"
+	    "oneup/acl-bundle": "~0.12"
 
     },
     "require-dev": {

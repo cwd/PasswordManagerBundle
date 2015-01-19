@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PwdMgr\Bundle\AdminBundle\Form;
+namespace PwdMgr\Bundle\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

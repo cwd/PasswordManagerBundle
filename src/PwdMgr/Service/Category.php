@@ -84,7 +84,7 @@ class Category extends BaseService
             $node = $this->find($id);
             $node->setLft($idx + $lastLeft);
             $node->setLvl($lvl);
-            if ($parentNode != null) {
+            if ($parentNode !== null) {
                 $node->setParent($parentNode);
             } else {
                 $node->setParent(null);
